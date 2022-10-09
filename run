@@ -1,0 +1,58 @@
+#!/bin/sh
+
+app_start() {
+  # ./node_modules/.bin/tsc
+  app_build
+  node esbuild-watch.js
+}
+
+app_build() {
+  ./node_modules/.bin/esbuild src/index.ts --platform=node --bundle --outfile=dist/server.js
+}
+
+app_run() {
+  node dist/server.js
+}
+
+app_build() {
+  ./node_modules/.bin/esbuild src/index.ts --platform=node --bundle --outfile=dist/server.js
+}
+
+app_reset() {
+  rm -rf node_modules/
+  rm package.json yarn.lock yarn-error.log
+}
+
+app_lint() {
+  ./node_modules/.bin/tsc --project ./tsconfig.json --noEmit
+  ./node_modules/.bin/eslint --ext .ts,.tsx src/
+}
+
+app_format() {
+  ./node_modules/.bin/prettier --check "src/**/*.ts*" 
+}
+
+app_format_fix() {
+  ./node_modules/.bin/prettier --check -w "src/**/*.ts*" 
+}
+
+
+if [ "$1" = "lint" ]; then app_lint ; exit ; fi
+if [ "$1" = "format" ]; then app_format; exit ; fi
+if [ "$1" = "format-fix" ]; then app_format_fix; exit ; fi
+
+if [ "$1" = "start" ]; then app_start ; exit ; fi
+if [ "$1" = "build" ]; then app_build ; exit ; fi
+if [ "$1" = "run" ]; then app_run ; exit ; fi
+if [ "$1" = "reset" ]; then app_reset ; exit ; fi
+
+echo "Command not found. Available commands:
+
+  start - run project locally for interactive development
+  build - make a production build for deployment
+  run - run the output of the build command
+  reset - reset project scaffolding (deletes package.json & node_modules folder)
+  lint - checks the validity of your code
+  format - check the formatting of your code
+  format-fix - fixes the formatting of your code
+"

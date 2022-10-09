@@ -1,0 +1,23 @@
+body {
+  padding: 0;
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+#cnv1 {
+  width: calc(100% - 2px);
+  height: calc(100% - 100px);
+  border: 1px solid black;
+  background-color: aqua;
+}
+#page_title {
+  width: 100%;
+  text-align: center;
+}
+#page_status {
+  width: 100%;
+  text-align: center;
+
+}
